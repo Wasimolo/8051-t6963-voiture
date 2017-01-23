@@ -27,9 +27,12 @@ int testGameboard();
 
 #define FRUIT (0x15 + CHAR_BASE)
 
+
+
 void GMB_initialize();
 void GMB_draw(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1);
 void GMB_clear(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1);
 void GMB_display(unsigned char x0, unsigned char y0, char *text);
+
 
 #endif

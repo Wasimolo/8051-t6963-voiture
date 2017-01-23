@@ -2,12 +2,10 @@
 #include "stdio-t6963c.h"
 #include "test.h"
 #include "buffer.h"
-#include "snake.h"
+#include "voiture.h"
+#include "map.h"
 #include "keyboard.h"
-#include "fruit.h"
 #include "gameboard.h"
-//TEST
-// Snake-0
 
 #ifndef TEST
 
@@ -22,21 +20,20 @@ void initialize() {
 }
 
 void play() {
-	Snake snake = {MOVES_RIGHT, {10, 10}, ALIVE, 5};
 	unsigned char *keyboard = (unsigned char __xdata *) 0x3000;
+	Voiture voiture = {NONE, {10, 10}, ALIVE};
 	Arrow arrow;
 
-	GMB_draw(SNAKE_LIMIT_X0, SNAKE_LIMIT_Y0, SNAKE_LIMIT_X1, SNAKE_LIMIT_Y1);
-	
-	FRUIT_place();
+	GMB_draw(VOITURE_LIMIT_X0, VOITURE_LIMIT_Y0, VOITURE_LIMIT_X1, VOITURE_LIMIT_Y1);
+	MAP_initialize();
+
+
 	do {
 		arrow = KEYBOARD_readArrows(keyboard);
-		if (SNAKE_iterate(&snake, arrow) == EATING) {
-			FRUIT_place();
-		}		
+		voiture.status = VOITURE_iterate(&voiture, arrow);
 		pause(20000);
-	} while (snake.status != DEAD);
-	GMB_display(3, 7, " Le serpent est mort ");
+	} while (voiture.status != DEAD);
+	GMB_display(3, 7, " La voiture est raide ");
 }
 
 void main(void) {
@@ -51,18 +48,6 @@ void main(void) {
 #else
 #include <stdio.h>
 void main(void) {
-	int testsInError = 0;
-    	printf("%d YOOO",testsInError);
-	
-	STDIO_initialize();
-
-	testsInError += testBuffer();
-	testsInError += testSnake();
-	testsInError += testKeyboard();
-	testsInError += testFruit();
-	testsInError += testGameboard();
-
-	printf("%d tests en erreur", testsInError);
 
 	while(1);
 }

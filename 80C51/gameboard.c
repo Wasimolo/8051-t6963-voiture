@@ -5,6 +5,7 @@
 #include "gameboard.h"
 
 #define ROM_CG_ADDRESS 0x0000
+unsigned char master_ligne = 0;
 
 /**
  * Copie la définition d'un caractère depuis la ROM vers la zone de définition
@@ -30,12 +31,10 @@ void GMB_initialize() {
 	GMB_copyFromRomToCg( 5, OBSTACLE_F);
 	GMB_copyFromRomToCg( 6, OBSTACLE_G);
 	GMB_copyFromRomToCg( 7, OBSTACLE_H);
-
 	GMB_copyFromRomToCg( 8, SNAKE_BODY);
 	GMB_copyFromRomToCg( 9, SNAKE_SWALLOW);
 	GMB_copyFromRomToCg(10, SNAKE_HEAD);
 	GMB_copyFromRomToCg(11, SNAKE_DEAD);
-
 	GMB_copyFromRomToCg(12, FRUIT);
 
 	
@@ -138,6 +137,8 @@ void GMB_display(unsigned char x0, unsigned char y0, char *text) {
 		T6963C_writeAt(x0+taille+1, y0+2,OBSTACLE_H);
 
 }
+
+
 
 #ifdef TEST
 int bddGameboardDraw() {
