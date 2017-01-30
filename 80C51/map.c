@@ -4,16 +4,23 @@
 #include "bdd.h"
 #include "gameboard.h"
 
+
 void MAP_initialize(){
+	int i=0;
+
+	for(i=0;i<WIDTH_MAP;i++){
+		
+	}
+	
 
 }
 
-unsigned char map_hauteur(){
+unsigned char MAP_hauteur(){
 	
 }
 
 
-void GMB_createmap(){
+void MAP_create(){
 	
 
 }
