@@ -3,9 +3,10 @@
 #include "t6963c.h"
 #include "bdd.h"
 #include "gameboard.h"
-
+#include "map.h"
 #define ROM_CG_ADDRESS 0x0000
-unsigned char master_ligne = 0;
+
+unsigned int master_ligne = 29;
 
 /**
  * Copie la définition d'un caractère depuis la ROM vers la zone de définition
@@ -137,6 +138,43 @@ void GMB_display(unsigned char x0, unsigned char y0, char *text) {
 		T6963C_writeAt(x0+taille+1, y0+2,OBSTACLE_H);
 
 }
+
+/**
+ * Affiche la carte selon le mouvement.
+ * La carte est affichée selon le pointeur du tableau 
+ * 
+ * 
+ * 
+ */
+
+void GMP_MAP(){
+	unsigned int i=0;
+	unsigned int n=0;
+	unsigned int m=0;
+	i=29;
+	for(m=(30-master_ligne);m>=0;m--){
+		for(n=0;n<=HEIGHT_MAP;n++){
+				if(getMAP(m,n)){
+					T6963C_writeAt(i,n,OBSTACLE_H);
+				}else{
+					T6963C_writeAt(i,n,EMPTY);
+				}
+			}
+			i --;
+		}
+	
+
+	master_ligne --;
+	if(master_ligne < WIDTH_MAP){
+		master_ligne=29;
+		//MAP_initialize();
+	}
+	
+}
+
+
+
+
 
 
 

@@ -1,17 +1,14 @@
-#ifndef ___MAP_H
-#define ___MAP_H
+#ifndef HGH
+#define HGH
 
-
-#define WIDTH_MAP 16
-#define HEIGHT_MAP 10
+#define WIDTH_MAP 19
+#define HEIGHT_MAP 13
 #define SPACE_CAR 5
 
 
-unsigned char __xdata MAP[WIDTH_MAP][HEIGHT_MAP]
 
 void MAP_initialize();
-unsigned char MAP_hauteur();
-void MAP_create();
-
-
+unsigned int MAP_hauteur( unsigned int min, unsigned int max);
+void MAP_create(unsigned int ligne, unsigned int haut_obs);
+unsigned char getMAP(unsigned int x, unsigned int y);
 #endif

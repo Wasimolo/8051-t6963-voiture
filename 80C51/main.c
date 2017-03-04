@@ -31,6 +31,7 @@ void play() {
 	do {
 		arrow = KEYBOARD_readArrows(keyboard);
 		voiture.status = VOITURE_iterate(&voiture, arrow);
+		GMP_MAP();
 		pause(20000);
 	} while (voiture.status != DEAD);
 	GMB_display(3, 7, " La voiture est raide ");
