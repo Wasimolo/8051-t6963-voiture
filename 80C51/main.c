@@ -21,10 +21,9 @@ void initialize() {
 
 void play() {
 	unsigned char *keyboard = (unsigned char __xdata *) 0x3000;
-	Voiture voiture = {NONE, {10, 10}, ALIVE};
+	Voiture voiture = {NONE, {2, 10}, ALIVE};
 	Arrow arrow;
 
-	GMB_draw(VOITURE_LIMIT_X0, VOITURE_LIMIT_Y0, VOITURE_LIMIT_X1, VOITURE_LIMIT_Y1);
 	MAP_initialize();
 
 
@@ -32,7 +31,8 @@ void play() {
 		arrow = KEYBOARD_readArrows(keyboard);
 		voiture.status = VOITURE_iterate(&voiture, arrow);
 		GMP_MAP();
-		pause(20000);
+		VOITURE_show(&voiture);
+		//pause(20000);
 	} while (voiture.status != DEAD);
 	GMB_display(3, 7, " La voiture est raide ");
 }
@@ -49,7 +49,13 @@ void main(void) {
 #else
 #include <stdio.h>
 void main(void) {
-
-	while(1);
+   int testsInError = 0;
+   printf("%d\n",testsInError);
+   STDIO_initialize();
+   testsInError += testVoiture();
+   
+   printf("%d tests en erreur", testsInError);
+   
+   while(1);
 }
 #endif

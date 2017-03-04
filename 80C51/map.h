@@ -4,6 +4,7 @@
 #define WIDTH_MAP 30
 #define HEIGHT_MAP 16
 #define SPACE_CAR 5
+#define PLAGE_VOITURE 4
 
 
 

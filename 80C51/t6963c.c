@@ -153,21 +153,40 @@ unsigned int T6963C_autoWriteMap(unsigned int address,
                               unsigned int master_colonne) {
 	unsigned int n;
 	unsigned char hauteur_max;
+	unsigned char ecriture;
+	
 
-	T6963C_addressCommand(0x24, address);
-	T6963C_noDataCommand(0xB0);
+
 	for(n=master_colonne ; n<(master_colonne+size); n++) {
+		ecriture = 1;
 		address++;
 		hauteur_max = getMAP(n);
-		if (hauteur < hauteur_max){
-			T6963C_statusCheckForAutoWrite();
-			_t6963c[CD_DATA] = data1;
-		}else{
-			T6963C_statusCheckForAutoWrite();
-			_t6963c[CD_DATA] = empty;
+		if (n < (master_colonne + PLAGE_VOITURE)){
+					T6963C_addressCommand(0x24,address);
+					T6963C_noDataCommand(0xC1);
+					if ((_t6963c[CD_DATA]!=data1) && (_t6963c[CD_DATA]!=empty )) {
+						ecriture =0;
+					}
+		}
+
+		if(ecriture == 1){
+				T6963C_addressCommand(0x24, address);
+				T6963C_noDataCommand(0xB0);
+				if ((hauteur < hauteur_max) ){
+					T6963C_statusCheckForAutoWrite();
+					_t6963c[CD_DATA] = data1;
+				}else{
+					if(hauteur >(hauteur_max+SPACE_CAR) && (n > 10)){
+						T6963C_statusCheckForAutoWrite();
+					    _t6963c[CD_DATA] = data1;
+					}else{
+					T6963C_statusCheckForAutoWrite();
+					_t6963c[CD_DATA] = empty;}
+				}
+				T6963C_noDataCommand(0xB2);
 		}
 	}
-	T6963C_noDataCommand(0xB2);
+
 	return address;
 }
 
