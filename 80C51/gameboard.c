@@ -6,7 +6,7 @@
 #include "map.h"
 #define ROM_CG_ADDRESS 0x0000
 
-unsigned int master_ligne = 29;
+unsigned int master_colonne = 0;
 
 /**
  * Copie la définition d'un caractère depuis la ROM vers la zone de définition
@@ -148,27 +148,17 @@ void GMB_display(unsigned char x0, unsigned char y0, char *text) {
  */
 
 void GMP_MAP(){
-	unsigned int i=0;
-	unsigned int n=0;
-	unsigned int m=0;
-	i=29;
-	for(m=(30-master_ligne);m>=0;m--){
-		for(n=0;n<=HEIGHT_MAP;n++){
-				if(getMAP(m,n)){
-					T6963C_writeAt(i,n,OBSTACLE_H);
-				}else{
-					T6963C_writeAt(i,n,EMPTY);
-				}
-			}
-			i --;
-		}
-	
 
-	master_ligne --;
-	if(master_ligne < WIDTH_MAP){
-		master_ligne=29;
-		//MAP_initialize();
+	unsigned char ligne;
+	unsigned int address;
+	
+	for(ligne=0;ligne < HEIGHT_MAP;ligne++){
+			address = T6963C_calculateAddress(0,ligne);
+			T6963C_autoWriteMap(address,OBSTACLE_A,EMPTY,29,ligne,master_colonne);
 	}
+
+	master_colonne++;
+
 	
 }
 

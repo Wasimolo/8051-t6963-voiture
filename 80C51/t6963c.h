@@ -23,6 +23,14 @@ void T6963C_statusCheckForAutoWrite();
 unsigned int T6963C_autoWrite(unsigned int address, 
                               unsigned char *data1,
                               unsigned int size);
+
+unsigned int T6963C_autoWriteMap(unsigned int address, 
+								unsigned char data1,
+								unsigned char empty,
+								unsigned int size, 
+								unsigned char hauteur,
+								unsigned int master_colonne);
+
 unsigned int T6963C_autoRepeat(unsigned int address, 
                                unsigned char data1,
                                unsigned int repeats);

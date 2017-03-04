@@ -1,5 +1,6 @@
 #include <mcs51reg.h>
 #include "t6963c.h"
+#include "map.h"
 
 unsigned char __xdata *_t6963c = (unsigned char __xdata *) 0x2000;
 
@@ -135,6 +136,42 @@ unsigned int T6963C_autoWrite(unsigned int address,
 	T6963C_noDataCommand(0xB2);
 	return address;
 }
+
+/**
+ * Affiche plusieurs fois le caractère spécifié à l'adresse indiquée.
+ * @param address L'adresse.
+ * @param data Vecteur avec les bytes à écrire.
+ * @param size Nombre de bytes à écrire.
+ * @param L'adresse suivante au dernier byte. Ceci peut être
+ * pratique pour les affichages constitués de plusieurs blocs.
+ */
+unsigned int T6963C_autoWriteMap(unsigned int address, 
+                              unsigned char data1,
+							  unsigned char empty,
+                              unsigned int size, 
+                              unsigned char hauteur, 
+                              unsigned int master_colonne) {
+	unsigned int n;
+	unsigned char hauteur_max;
+
+	T6963C_addressCommand(0x24, address);
+	T6963C_noDataCommand(0xB0);
+	for(n=master_colonne ; n<(master_colonne+size); n++) {
+		address++;
+		hauteur_max = getMAP(n);
+		if (hauteur < hauteur_max){
+			T6963C_statusCheckForAutoWrite();
+			_t6963c[CD_DATA] = data1;
+		}else{
+			T6963C_statusCheckForAutoWrite();
+			_t6963c[CD_DATA] = empty;
+		}
+	}
+	T6963C_noDataCommand(0xB2);
+	return address;
+}
+
+
 /**
  * Affiche plusieurs fois le caractère spécifié à l'adresse indiquée.
  * @param address L'adresse.
