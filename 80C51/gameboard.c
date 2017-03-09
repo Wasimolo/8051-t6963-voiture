@@ -22,7 +22,17 @@ void GMB_copyFromRomToCg(unsigned char positionInRom, unsigned char cgCode) {
 
 /**
  * Initialise les caractères utilisés pendant le jeu.
- */
+-- Voiture (4 carres)
+    - left back of the car (address = 0x21 + CHAR_BASE)
+    - left front of the car (address = 0x22 + CHAR_BASE)
+    - right back of the car (address = 0x23 + CHAR_BASE)
+    - right front of the car (address = 0x24 + CHAR_BASE)
+-- OBSTACLE (1 carre)
+(address = 0x27 + CHAR_BASE)
+
+-- GAZON (1 carre)
+(address = 0x28 + CHAR_BASE)*/
+ 
 void GMB_initialize() {
 	GMB_copyFromRomToCg( 0, VOITURE_BACK_LEFT);
 	GMB_copyFromRomToCg( 1, VOITURE_FRONT_LEFT);
@@ -32,67 +42,6 @@ void GMB_initialize() {
 	GMB_copyFromRomToCg( 5, BARRIERE_DOWN);
 	GMB_copyFromRomToCg( 6, OBSTACLE);
 	GMB_copyFromRomToCg( 7, GAZON);
-	/*GMB_copyFromRomToCg( 8, SNAKE_BODY);
-	GMB_copyFromRomToCg( 9, SNAKE_SWALLOW);
-	GMB_copyFromRomToCg(10, SNAKE_HEAD);
-	GMB_copyFromRomToCg(11, SNAKE_DEAD);
-	GMB_copyFromRomToCg(12, FRUIT);*/
-
-/*-- Voiture (4 carres)
-    - left back of the car (address = 0x21 + CHAR_BASE)
-    - left front of the car (address = 0x22 + CHAR_BASE)
-    - right back of the car (address = 0x23 + CHAR_BASE)
-    - right front of the car (address = 0x24 + CHAR_BASE)
-
--- Barriere haut (1 carre)
-(address = 0x25 + CHAR_BASE)
-
--- Barriere bas (1 carre)
-(address = 0x26 + CHAR_BASE)
-
--- Gazon haut (1 carre)
-(address = 0x27 + CHAR_BASE)
-
--- Gazon bas (1 carre)
-(address = 0x28 + CHAR_BASE)*/
-	
-}
-
-/**
- * Dessine un rectangle entre les coordonnées spécifiées.
- * Le carré est dessiné avec des caractères OBSTACLE_*, pour
- * que le serpent ne puisse pas le traverser.
- * @param x0, y0: Coordonnées de l'angle supérieur droit.
- * @param x1, y1: Coordonnées de l'angle inférieur gauche.
-		"ABBBBBBBBC",
-		"D........E",
-		"D........E",
-		"D........E",
-		"FGGGGGGGGH"
- */
-void GMB_draw(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1) {
-	/*unsigned int address=0;
-	unsigned int  n=0;
-
-	//Première ligne
-	T6963C_writeAt(x0, y0,OBSTACLE_A);
-	address = T6963C_calculateAddress(x0+1,y0);
-	T6963C_autoRepeat(address, OBSTACLE_B,x1-1); 
-	T6963C_writeAt(x1,y0,OBSTACLE_C);
-
-	//Ligne entre deux
-	for (n=y0+1; n<= y1-1; n++) {
-		T6963C_writeAt(x0, n,OBSTACLE_D);
-			T6963C_writeAt(x1, n,OBSTACLE_E);
-	}
-
-	//Dernière ligne
-	T6963C_writeAt(x0, y1,OBSTACLE_F);
-	address = T6963C_calculateAddress(x0+1,y1);
-	T6963C_autoRepeat(address, OBSTACLE_G,x1-1); 
-	T6963C_writeAt(x1,y1,OBSTACLE_H);	
-*/
-
 }
 
 
@@ -132,16 +81,15 @@ void GMB_display(unsigned char x0, unsigned char y0, char *text) {
 		while(text[taille]){
 			taille++;
 		}
-
 		//Première ligne
-		T6963C_writeAt(x0, y0,OBSTACLE);
+		T6963C_writeAt(x0, y0,GAZON);
 		address = T6963C_calculateAddress(x0+1,y0);
-		T6963C_autoRepeat(address, OBSTACLE, (taille)); 
-		T6963C_writeAt(x0+taille+1, y0,OBSTACLE);
-		
+		T6963C_autoRepeat(address, GAZON, (taille)); 
+		T6963C_writeAt(x0+taille+1, y0,GAZON);
+
 		//Ligne millieu
-		T6963C_writeAt(x0, y0+1,OBSTACLE);
-		T6963C_writeAt(x0+taille+1, y0+1,OBSTACLE);
+		T6963C_writeAt(x0, y0+1,GAZON);
+		T6963C_writeAt(x0+taille+1, y0+1,GAZON);
 
 		while(text[i]){
 			T6963C_writeAt(x0+1+i, y0+1,text[i]-32);
@@ -149,10 +97,10 @@ void GMB_display(unsigned char x0, unsigned char y0, char *text) {
 		}
 
 		//Dernière ligne
-		T6963C_writeAt(x0, y0+2,OBSTACLE);
+		T6963C_writeAt(x0, y0+2,GAZON);
 		address = T6963C_calculateAddress(x0+1,y0+2);
-		T6963C_autoRepeat(address, OBSTACLE, (taille)); 
-		T6963C_writeAt(x0+taille+1, y0+2,OBSTACLE);
+		T6963C_autoRepeat(address, GAZON, (taille)); 
+		T6963C_writeAt(x0+taille+1, y0+2,GAZON);
 
 }
 
@@ -160,11 +108,10 @@ void GMB_display(unsigned char x0, unsigned char y0, char *text) {
  * Affiche la carte selon le mouvement.
  * La carte est affichée selon le pointeur du tableau 
  * 
- * 
- * 
  */
 
-void GMP_MAP(){
+unsigned char GMP_MAP(){
+
 
 	unsigned char ligne;
 	unsigned int address;
@@ -174,11 +121,53 @@ void GMP_MAP(){
 			T6963C_autoWriteMap(address,OBSTACLE,EMPTY,29,ligne,master_colonne);
 	}
 
-	master_colonne++;
-
-	
+	return master_colonne++;
+	//if(master_colonne)
 }
 
+/** Fonction sans modifier les fichiers sources, trop lentes.
+
+	unsigned char ligne=0;
+	unsigned int address=0;
+	unsigned int n=0;
+	unsigned char hauteur_max=0;
+	unsigned char ecriture=0;
+	unsigned char symbole=0;
+
+	
+	for(ligne=0;ligne < HEIGHT_MAP;ligne++){
+		address = T6963C_calculateAddress(0,ligne);
+		//T6963C_autoWriteMap(address,OBSTACLE,EMPTY,29,ligne,master_colonne);
+		for(n=master_colonne ; n<(master_colonne+29); n++) {
+			ecriture = 1;
+			address++;
+			hauteur_max = getMAP(n);
+			//Test si l'adresse est une pièce de la voiture
+			if (n < (master_colonne + PLAGE_VOITURE)){
+					symbole = T6963C_readFrom(n,ligne);
+
+					if ((symbole!= OBSTACLE) && (symbole!=EMPTY)) {
+						ecriture =0;
+					}
+			}
+			//Ecriture de la map
+			if(ecriture == 1){
+				
+				if ((ligne < hauteur_max) ){
+					T6963C_dataWrite(address,OBSTACLE);
+				}else{
+					if(ligne >(hauteur_max+SPACE_CAR) && (n > 10)){
+						T6963C_dataWrite(address,OBSTACLE);
+					}else{
+						T6963C_dataWrite(address,EMPTY);
+					}
+				}
+		}
+		}
+	}
+	master_colonne++;
+}
+*/
 
 
 
@@ -186,19 +175,6 @@ void GMP_MAP(){
 
 
 #ifdef TEST
-/*int bddGameboardDraw() {
-	BddExpectedContent c = {
-		"ABBBBBBBBC",
-		"D........E",
-		"D........E",
-		"D........E",
-		"FGGGGGGGGH"
-	};
-
-	BDD_clear();
-	GMB_draw(BDD_SCREEN_X, BDD_SCREEN_Y, BDD_SCREEN_X + BDD_SCREEN_WIDTH - 1, BDD_SCREEN_Y + BDD_SCREEN_HEIGHT - 1);
-	return BDD_assert(c, "GMBD");
-}
 
 int bddGameboardClear() {
 	BddExpectedContent c = {
@@ -236,5 +212,5 @@ int testGameboard() {
 	testsInError += bddGameboardDisplay();
 
 	return testsInError;
-}*/
+}
 #endif

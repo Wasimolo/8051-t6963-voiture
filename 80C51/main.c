@@ -17,29 +17,57 @@ void pause(unsigned int t) {
 void initialize() {
 	STDIO_initialize();
 	GMB_initialize();
+	MAP_initialize();
 }
 
 void play() {
 	unsigned char *keyboard = (unsigned char __xdata *) 0x3000;
+	unsigned char position=0;
 	Voiture voiture = {NONE, {2, 10}, ALIVE};
 	Arrow arrow;
-
-	MAP_initialize();
-
 
 	do {
 		arrow = KEYBOARD_readArrows(keyboard);
 		voiture.status = VOITURE_iterate(&voiture, arrow);
-		GMP_MAP();
+		position = GMP_MAP();
 		VOITURE_show(&voiture);
-		//pause(20000);
-	} while (voiture.status != DEAD);
-	GMB_display(3, 7, " La voiture est raide ");
+		if(position == LONG_MAP){voiture.status = END; }
+
+	} while (voiture.status == ALIVE);
+	if(voiture.status == DEAD){	
+		GMB_display(3, 7, " La voiture est raide ");
+	}else{
+		GMB_display(3, 7, " Fin . BARVO !!! ");
+	}
+}
+
+void title(){
+	unsigned char *keyboard = (unsigned char __xdata *) 0x3000;
+	Voiture voiture_titre_1 = {NONE, {2, 3}, ALIVE};
+	Voiture voiture_titre_2 = {NONE, {10, 13}, ALIVE};
+	Voiture voiture_titre_3 = {NONE, {20, 2}, ALIVE};
+	Voiture voiture_titre_4 = {NONE, {26, 12}, ALIVE};
+	Arrow arrow;
+
+	GMB_display(3, 7, "JuRocing:Rally Race 4.0");
+	VOITURE_show(&voiture_titre_1);
+	VOITURE_show(&voiture_titre_2);
+	VOITURE_show(&voiture_titre_3);
+	VOITURE_show(&voiture_titre_4);
+	do{
+		arrow = KEYBOARD_readArrows(keyboard);
+	}while(arrow == ARROW_NEUTRAL);
+	
+	GMB_clear(VOITURE_LIMIT_X0,VOITURE_LIMIT_Y0,VOITURE_LIMIT_X1,VOITURE_LIMIT_Y1);
+
+	return;
+
 }
 
 void main(void) {
 
 	initialize();
+	title();
 	play();
 
 	while(1);

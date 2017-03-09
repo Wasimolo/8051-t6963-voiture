@@ -159,7 +159,7 @@ unsigned int T6963C_autoWriteMap(unsigned int address,
 
 	for(n=master_colonne ; n<(master_colonne+size); n++) {
 		ecriture = 1;
-		address++;
+		
 		hauteur_max = getMAP(n);
 		if (n < (master_colonne + PLAGE_VOITURE)){
 					T6963C_addressCommand(0x24,address);
@@ -185,6 +185,7 @@ unsigned int T6963C_autoWriteMap(unsigned int address,
 				}
 				T6963C_noDataCommand(0xB2);
 		}
+		address++;
 	}
 
 	return address;

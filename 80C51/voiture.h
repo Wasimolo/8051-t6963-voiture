@@ -12,7 +12,8 @@ typedef enum {
 
 typedef enum {
     ALIVE,
-    DEAD
+    DEAD,
+	END
 } Status;
 
 typedef struct {

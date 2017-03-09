@@ -5,7 +5,7 @@
 #define HEIGHT_MAP 16
 #define SPACE_CAR 5
 #define PLAGE_VOITURE 4
-
+#define LONG_MAP 255
 
 
 void MAP_initialize();
