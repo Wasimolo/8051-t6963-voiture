@@ -10,6 +10,13 @@ unsigned char __xdata LTBLMAP[LONG_MAP];  //Longueur MAP
 unsigned int min =0;
 unsigned int max = 8;
 
+
+/**
+ * Initialise la map
+ * Incrémente de le tableau aléatoirement
+ * 
+ */
+
 void MAP_initialize(){
 	unsigned int hauteur=0;
 	unsigned int i=0;
@@ -22,12 +29,27 @@ void MAP_initialize(){
 	}
 }
 
+/**
+ * Initialise les premières colonnnes de la map
+ * haut de h pour placer la voiture sur la route correctement
+ *
+ */
+
 void MAP_begin(){
 	unsigned int i=0;
 	for(i=0;i<=LONG_MAP;i++){
 		LTBLMAP[i]= 1;
 	}
 }
+
+
+/**
+ * Retourne une valeur random dans l'interval min & max.
+ * 
+ * @param min Pointeur sur la variable minimum
+ * @param min Pointeur sur la variable maximum
+ *
+ */
 
 unsigned int MAP_hauteur(unsigned int min, unsigned int max){
 	
@@ -36,6 +58,15 @@ unsigned int MAP_hauteur(unsigned int min, unsigned int max){
 	
 	return random;
 }
+
+
+/**
+ * Modifie les valeurs min et max pour la fonction random
+ * Gère un saut de 1 maximum
+ * @param min Pointeur sur la variable minimum
+ * @param min Pointeur sur la variable maximum
+ *
+ */
 
 void MAP_minmax(unsigned int *min, unsigned int *max, unsigned int hauteur){
 	if (hauteur > 8) {
@@ -51,6 +82,11 @@ void MAP_minmax(unsigned int *min, unsigned int *max, unsigned int hauteur){
 
 }
 
+/**
+ * Retourne valeur de la hauteur selon l'index
+ * 
+ * @param x Index du tableau
+ */
 
 unsigned char getMAP(unsigned int x){
 	return LTBLMAP[x];
