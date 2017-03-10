@@ -4,6 +4,7 @@
 #include "bdd.h"
 #include "gameboard.h"
 #include "map.h"
+#include "test.h"
 #define ROM_CG_ADDRESS 0x0000
 
 unsigned int master_colonne = 0;
@@ -193,9 +194,9 @@ int bddGameboardClear() {
 int bddGameboardDisplay() {
 	BddExpectedContent c = {
 		"..........",
-		".ABBBBBC..",
-		".D TXT E..",
-		".FGGGGGH..",
+		".HHHHHHH..",
+		".H TXT H..",
+		".HHHHHHH..",
 		".........."
 	};
 
@@ -205,9 +206,7 @@ int bddGameboardDisplay() {
 }
 
 int testGameboard() {
-	int testsInError = 0;
-
-	testsInError += bddGameboardDraw();
+	int testsInError = 0;	
 	testsInError += bddGameboardClear();
 	testsInError += bddGameboardDisplay();
 

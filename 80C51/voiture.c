@@ -240,7 +240,7 @@ int testVoiture() {
     testsInError += testVoitureHitsABorder();
 
     // Tests de comportement:
-    //testsInError += bddSnakeHitsAnObstacle();
+    //testsInError += bddVoitureHitsAnObstacle();
 
     // Nombre de tests en erreur:
     return testsInError;

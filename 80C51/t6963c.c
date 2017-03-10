@@ -142,8 +142,10 @@ unsigned int T6963C_autoWrite(unsigned int address,
  * @param address L'adresse.
  * @param data Vecteur avec les bytes à écrire.
  * @param size Nombre de bytes à écrire.
- * @param L'adresse suivante au dernier byte. Ceci peut être
- * pratique pour les affichages constitués de plusieurs blocs.
+ * @param hauteur Ligne de l'écran LCD en cours d'actualisation.
+ * @param master_colonne Numéro d'index du tableau
+
+ * ! Cette méthode n'est pas conventionnelle, mais elle offre les meilleures performances !
  */
 unsigned int T6963C_autoWriteMap(unsigned int address, 
                               unsigned char data1,
@@ -161,14 +163,15 @@ unsigned int T6963C_autoWriteMap(unsigned int address,
 		ecriture = 1;
 		
 		hauteur_max = getMAP(n);
-		if (n < (master_colonne + PLAGE_VOITURE)){
+		if (n < (master_colonne + PLAGE_VOITURE)){ //Vérifier seulement la plage de la voiture
+					//Méthode T6963C_readFrom trop lente | implémentation du code de lecture
 					T6963C_addressCommand(0x24,address);
 					T6963C_noDataCommand(0xC1);
 					if ((_t6963c[CD_DATA]!=data1) && (_t6963c[CD_DATA]!=empty )) {
 						ecriture =0;
 					}
 		}
-
+		//Ecriture de la map avec une actualisation horitontale
 		if(ecriture == 1){
 				T6963C_addressCommand(0x24, address);
 				T6963C_noDataCommand(0xB0);
@@ -176,6 +179,7 @@ unsigned int T6963C_autoWriteMap(unsigned int address,
 					T6963C_statusCheckForAutoWrite();
 					_t6963c[CD_DATA] = data1;
 				}else{
+					//Gestion de l'espace de la route entre les deux bords
 					if(hauteur >(hauteur_max+SPACE_CAR) && (n > 10)){
 						T6963C_statusCheckForAutoWrite();
 					    _t6963c[CD_DATA] = data1;

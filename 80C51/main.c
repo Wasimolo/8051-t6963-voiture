@@ -81,6 +81,8 @@ void main(void) {
    printf("%d\n",testsInError);
    STDIO_initialize();
    testsInError += testVoiture();
+   testsInError += testMap();
+   testsInError += testGameboard();
    
    printf("%d tests en erreur", testsInError);
    

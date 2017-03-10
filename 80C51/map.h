@@ -11,6 +11,6 @@
 void MAP_initialize();
 void MAP_begin();
 unsigned int MAP_hauteur( unsigned int min, unsigned int max);
-//void MAP_create(unsigned int ligne, unsigned int haut_obs);
+void MAP_minmax(unsigned int *min, unsigned int *max, unsigned int hauteur);
 unsigned char getMAP(unsigned int x);
 #endif
